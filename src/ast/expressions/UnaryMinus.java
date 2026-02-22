@@ -2,8 +2,15 @@ package ast.expressions;
 
 public class UnaryMinus extends AbstractExpression{
 
-    public UnaryMinus(int line, int column) {
+    private Expression operand;
+
+    public UnaryMinus(int line, int column, Expression operand) {
         super(line, column);
+        this.operand = operand;
+    }
+
+    public Expression getOperand() {
+        return operand;
     }
 
 }
