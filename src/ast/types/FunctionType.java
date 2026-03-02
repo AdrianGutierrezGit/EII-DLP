@@ -20,4 +20,12 @@ public class FunctionType implements Type {
     public List<VarDefinition> getParameters() {
         return parameters;
     }
+
+    @Override
+    public String toString() {
+        return "FunctionType{" +
+                "returnType=" + returnType +
+                ", parameters=" + parameters +
+                '}';
+    }
 }

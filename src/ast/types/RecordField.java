@@ -18,4 +18,12 @@ public class RecordField implements Type  {
     public Type getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "RecordField{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

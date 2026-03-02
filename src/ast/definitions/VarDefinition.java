@@ -11,5 +11,8 @@ public class VarDefinition extends AbstractDefinition implements Statement {
         super(line, column, name, type);
     }
 
-
+    @Override
+    public String toString() {
+        return "VarDefinition{}";
+    }
 }

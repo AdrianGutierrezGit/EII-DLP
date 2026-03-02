@@ -13,4 +13,10 @@ public class UnaryMinus extends AbstractExpression{
         return operand;
     }
 
+    @Override
+    public String toString() {
+        return "UnaryMinus{" +
+                "operand=" + operand +
+                '}';
+    }
 }

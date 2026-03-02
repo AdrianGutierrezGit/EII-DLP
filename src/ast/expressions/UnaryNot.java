@@ -13,4 +13,10 @@ public class UnaryNot extends AbstractExpression {
         return operand;
     }
 
+    @Override
+    public String toString() {
+        return "UnaryNot{" +
+                "operand=" + operand +
+                '}';
+    }
 }

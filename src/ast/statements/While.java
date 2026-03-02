@@ -20,4 +20,12 @@ public class While extends AbstractStatement{
     public List<Statement> getStatements() {
         return statements;
     }
+
+    @Override
+    public String toString() {
+        return "While{" +
+                "condition=" + condition +
+                ", statements=" + statements +
+                '}';
+    }
 }

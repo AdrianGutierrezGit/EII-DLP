@@ -18,4 +18,11 @@ public class FieldAccess extends AbstractExpression {
         return fieldName;
     }
 
+    @Override
+    public String toString() {
+        return "FieldAccess{" +
+                "field=" + field +
+                ", fieldName='" + fieldName + '\'' +
+                '}';
+    }
 }

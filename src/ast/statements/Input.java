@@ -14,4 +14,11 @@ public class Input extends AbstractStatement {
     public Expression getExpression() {
         return expression;
     }
+
+    @Override
+    public String toString() {
+        return "Input{" +
+                "expression=" + expression +
+                '}';
+    }
 }

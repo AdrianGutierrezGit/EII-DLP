@@ -4,12 +4,12 @@ import ast.expressions.Expression;
 
 import java.util.List;
 
-public class If extends AbstractStatement{
+public class IfElse extends AbstractStatement{
     private Expression condition;
     private List<Statement> ifStatements;
     private List<Statement> elseStatements;
 
-    public If(int line, int column, Expression condition, List<Statement> ifStatements, List<Statement> elseStatements) {
+    public IfElse(int line, int column, Expression condition, List<Statement> ifStatements, List<Statement> elseStatements) {
         super(line, column);
         this.condition = condition;
         this.ifStatements = ifStatements;
@@ -24,5 +24,14 @@ public class If extends AbstractStatement{
     }
     public List<Statement> getElseStatements() {
         return elseStatements;
+    }
+
+    @Override
+    public String toString() {
+        return "IfElse{" +
+                "condition=" + condition +
+                ", ifStatements=" + ifStatements +
+                ", elseStatements=" + elseStatements +
+                '}';
     }
 }

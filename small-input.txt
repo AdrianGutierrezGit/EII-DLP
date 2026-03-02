@@ -1,1 +1,10 @@
-123 + x
+let contadorGlobal : int;
+
+function calcularDoble(numero : int) : int {
+    let resultado : int;
+    resultado = numero * 2;
+    return resultado;
+}
+
+function main() : void {
+}

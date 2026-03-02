@@ -1,5 +1,14 @@
 // Generated from C:/Users/Adria/Desktop/DLP/practica/proyecto_DLP/src/parser/TSmm.g4 by ANTLR 4.13.2
 package parser;
+
+import ast.expressions.*;
+import ast.expressions.binaryOperations.*;
+import ast.types.*;
+import ast.definitions.*;
+import ast.types.*;
+import ast.statements.*;
+import ast.*;
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

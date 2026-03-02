@@ -4,11 +4,10 @@ import ast.definitions.Definition;
 
 import java.util.List;
 
-public class Program extends AbstractLocatable{
+public class Program implements ASTNode{
     private List<Definition> program;
 
-    public Program(int line, int column, List<Definition> program){
-        super(line,column);
+    public Program(List<Definition> program){
         this.program = program;
     }
 

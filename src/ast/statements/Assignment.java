@@ -18,4 +18,12 @@ public class Assignment extends AbstractStatement{
     public Expression getRight() {
         return right;
     }
+
+    @Override
+    public String toString() {
+        return "Assignment{" +
+                "left=" + left +
+                ", right=" + right +
+                '}';
+    }
 }

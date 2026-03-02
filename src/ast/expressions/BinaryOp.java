@@ -23,4 +23,12 @@ public abstract class BinaryOp extends AbstractExpression {
         return right;
     }
 
+    @Override
+    public String toString() {
+        return "BinaryOp{" +
+                "left=" + left +
+                ", operator='" + operator + '\'' +
+                ", right=" + right +
+                '}';
+    }
 }

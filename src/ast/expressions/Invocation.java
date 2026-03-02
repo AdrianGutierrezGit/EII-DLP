@@ -22,4 +22,11 @@ public class Invocation extends AbstractExpression implements Statement {
         return arguments;
     }
 
+    @Override
+    public String toString() {
+        return "Invocation{" +
+                "function=" + function +
+                ", arguments=" + arguments +
+                '}';
+    }
 }

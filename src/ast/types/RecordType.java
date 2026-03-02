@@ -11,4 +11,11 @@ public class RecordType implements Type {
     public List<RecordField> getFields(){
         return fields;
     }
+
+    @Override
+    public String toString() {
+        return "RecordType{" +
+                "fields=" + fields +
+                '}';
+    }
 }

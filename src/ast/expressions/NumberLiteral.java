@@ -11,4 +11,11 @@ public class NumberLiteral extends AbstractExpression{
     public double getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "NumberLiteral{" +
+                "value=" + value +
+                '}';
+    }
 }
