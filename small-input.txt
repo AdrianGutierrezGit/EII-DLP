@@ -1,10 +1,30 @@
-let contadorGlobal : int;
+let contadorGlobal : [20][10]int;
+let a : int;
+let b : int;
+let c : int;
+let j,i,u : int;
 
 function calcularDoble(numero : int) : int {
     let resultado : int;
+    let pair: [
+        	let integer: [10][10]int;
+        	let character:[
+        	    let a: int;
+        	    ];
+      	];
+    let fieldsarray : [10][
+                                  	let integer: [10][10]int;
+                                  	let character:[
+                                  	    let a: int;
+                                  	    ];
+                                	];
+    vector[9][(4.3 as int)] = 5;
+    contadorglobal[3][4] = 6;
     resultado = numero * 2;
     return resultado;
 }
 
 function main() : void {
+    if(calcularDoble(2) >= 2 && calcularDoble(2) >= 2){
+    }
 }

@@ -10,12 +10,14 @@ import ast.statements.*;
 import ast.*;
 }
 program returns [Program ast] locals [List<Definition> defs = new ArrayList<>()]:
-        (definition {$defs.addAll($definition.ast);})* main EOF {$ast = new Program($defs);}
+        (definition {$defs.addAll($definition.ast);})* m=main  {$defs.add($m.ast);$ast = new Program($defs);} EOF
        ;
 
 expression returns [Expression ast] locals [List<Expression> functionInvocationExps = new ArrayList<>()]:
             '(' expression ')' {$ast = $expression.ast;}
+          | ID '(' ((e1=expression ',' {$functionInvocationExps.add($e1.ast);})* e2=expression {$functionInvocationExps.add($e2.ast);})?')' {$ast = new Invocation($ID.getLine(),$ID.getCharPositionInLine()+1,new Variable($ID.getLine(), $ID.getCharPositionInLine()+1,$ID.text),$functionInvocationExps);}
           | '[' expression ']' {$ast = $expression.ast;}
+          | e1=expression '[' e2=expression ']' {$ast = new ArrayAccess($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast,$e2.ast);}
           | e1=expression '.' ID {$ast = new FieldAccess($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast, $ID.text);}
           | '-' expression {$ast = new UnaryMinus($expression.ast.getLine(),$expression.ast.getColumn(), $expression.ast);}
           | '!' expression {$ast = new UnaryNot($expression.ast.getLine(), $expression.ast.getColumn(),$expression.ast);}
@@ -24,8 +26,6 @@ expression returns [Expression ast] locals [List<Expression> functionInvocationE
           | e1=expression OP=('+'|'-') e2=expression {$ast = new Arithmetic($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast,$OP.text,$e2.ast);}
           | e1=expression OP=('>' | '>=' | '<' | '<=' | '==' | '!=') e2=expression {$ast = new Comparison($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast,$OP.text,$e2.ast);}
           | e1=expression OP=('&&' | '||') e2=expression {$ast = new Logic($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast,$OP.text,$e2.ast);}
-          | e1=expression '[' e2=expression ']' {$ast = new ArrayAccess($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast,$e2.ast);}
-          | ID '(' ((e1=expression ',' {$functionInvocationExps.add($e1.ast);})* e2=expression {$functionInvocationExps.add($e2.ast);})?')' {$ast = new Invocation($ID.getLine(),$ID.getCharPositionInLine()+1,new Variable($ID.getLine(), $ID.getCharPositionInLine()+1,$ID.text),$functionInvocationExps);}
           | ID {$ast = new Variable($ID.getLine(),$ID.getCharPositionInLine()+1,$ID.text);}
           | INT_CONSTANT {$ast = new IntLiteral($INT_CONSTANT.getLine(),$INT_CONSTANT.getCharPositionInLine() + 1, LexerHelper.lexemeToInt($INT_CONSTANT.text));}
           | REAL_CONSTANT {$ast = new NumberLiteral($REAL_CONSTANT.getLine(),$REAL_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
@@ -55,13 +55,13 @@ varDefinition returns [List<VarDefinition> ast = new ArrayList<>()] locals [List
 
 functionDefinition returns [FunctionDefinition ast] locals [List<Statement> functionBody = new ArrayList<>(),
                                                             List<VarDefinition> parameters = new ArrayList<>()]:
-                'function' ID1=ID '('(((ID2=ID ':' t1=type) ',' {$parameters.add(new VarDefinition($ID2.getLine(),$ID2.getCharPositionInLine()+1,$ID2.text,$t1.ast));})* ((ID3=ID ':' t2=type){$parameters.add(new VarDefinition($ID3.getLine(),$ID3.getCharPositionInLine()+1,$ID3.text,$t2.ast));}))? ')' ':' t3=type '{' (varDefinition{$functionBody.addAll($varDefinition.ast);})* (statement{$functionBody.addAll($statement.ast);})* '}'
+                'function' ID1=ID '('(((ID2=ID ':' t1=type) ',' {$parameters.add(new VarDefinition($ID2.getLine(),$ID2.getCharPositionInLine()+1,$ID2.text,$t1.ast));})* ((ID3=ID ':' t2=type){$parameters.add(new VarDefinition($ID3.getLine(),$ID3.getCharPositionInLine()+1,$ID3.text,$t2.ast));}))? ')' ':' t3=returnFunctionType '{' (varDefinition{$functionBody.addAll($varDefinition.ast);})* (statement{$functionBody.addAll($statement.ast);})* '}'
                 {$ast = new FunctionDefinition($ID1.getLine(),$ID1.getCharPositionInLine()+1,$ID1.text, new FunctionType($parameters,$t3.ast),$functionBody);}
                 ;
 
 main returns [FunctionDefinition ast] locals [List<Statement> mainBody = new ArrayList<>()]:
-    'function' 'main' '('')' ':' 'void' '{' (varDefinition {$mainBody.addAll($varDefinition.ast);})* (statement {$mainBody.addAll($statement.ast);})* '}'
-                    {$ast = new FunctionDefinition($start.getLine(),$start.getCharPositionInLine()+1,"main",VoidType.getInstance(),$mainBody);}
+    F='function' 'main' '('')' ':' 'void' '{' (varDefinition {$mainBody.addAll($varDefinition.ast);})* (statement {$mainBody.addAll($statement.ast);})* '}'
+                    {$ast = new FunctionDefinition($F.getLine(),$F.getCharPositionInLine()+1,"main",VoidType.getInstance(),$mainBody);}
     ;
 
 body returns [List<Statement> ast = new ArrayList<>()]:
@@ -79,7 +79,6 @@ type returns [Type ast] locals [List<VarDefinition> tempFields = new ArrayList<>
         }
         $ast = new RecordType($finalFields);
     }
-    | 'void' {$ast = VoidType.getInstance();}
 ;
 
 simpleType returns [Type ast]:
@@ -87,6 +86,11 @@ simpleType returns [Type ast]:
         | 'char' {$ast = CharType.getInstance();}
         | 'number' {$ast = DoubleType.getInstance();}
         ;
+
+returnFunctionType returns [Type ast]:
+                   simpleType {$ast = $simpleType.ast;}
+                 | 'void' {$ast = VoidType.getInstance();}
+                 ;
 //-------------------------------------------
 
 WHITES: [ \n\t\r]+ -> skip
@@ -95,7 +99,7 @@ WHITES: [ \n\t\r]+ -> skip
 LINE_COMMENT:'//' .*? ('\n' | EOF) -> skip
 ;
 
-BLOCK_COMMENT: '/* ' .*? ' */' -> skip
+BLOCK_COMMENT: '/*' .*? '*/' -> skip
 ;
 
 
