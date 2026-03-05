@@ -70,12 +70,18 @@ body returns [List<Statement> ast = new ArrayList<>()]:
     ;
 
 type returns [Type ast] locals [List<VarDefinition> tempFields = new ArrayList<>(),
-                                List<RecordField> finalFields = new ArrayList<>()]:
+                                List<RecordField> finalFields = new ArrayList<>(),
+                                List<String> fieldsNames = new ArrayList<>()]:
     simpleType {$ast = $simpleType.ast;}
     | '['INT_CONSTANT']' type {$ast = new ArrayType(LexerHelper.lexemeToInt($INT_CONSTANT.text),$type.ast);}
     | '[' (varDefinition {$tempFields.addAll($varDefinition.ast);})* ']' {
         for(VarDefinition field: $tempFields){
-            $finalFields.add(new RecordField(field.getName(),field.getType()));
+            if($fieldsNames.contains(field.getName())){
+                new ErrorType("Declarados dos campos con el mismo nombre", field);
+            }else{
+                $finalFields.add(new RecordField(field.getName(),field.getType()));
+            }
+            $fieldsNames.add(field.getName());
         }
         $ast = new RecordType($finalFields);
     }

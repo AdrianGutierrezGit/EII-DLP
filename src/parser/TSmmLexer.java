@@ -1,4 +1,4 @@
-// Generated from C:/Users/Adria/Desktop/DLP/practica/proyecto_DLP/src/parser/TSmm.g4 by ANTLR 4.13.2
+// Generated from C:/Users/uo300627/Desktop/DLP/DLP/src/parser/TSmm.g4 by ANTLR 4.13.2
 package parser;
 
 import ast.expressions.*;

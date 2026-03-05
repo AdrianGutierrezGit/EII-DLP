@@ -15,4 +15,10 @@ public class Program implements ASTNode{
         return program;
     }
 
+    @Override
+    public String toString() {
+        return "Program{" +
+                "program=" + program +
+                '}';
+    }
 }
