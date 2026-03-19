@@ -1,6 +1,8 @@
 package ast.expressions;
 
 import ast.statements.Statement;
+import visitor.Visitor;
+
 import java.util.List;
 
 public class Invocation extends AbstractExpression implements Statement {
@@ -20,6 +22,11 @@ public class Invocation extends AbstractExpression implements Statement {
 
     public List<Expression> getArguments() {
         return arguments;
+    }
+
+    @Override
+    public <PT,RT> RT accept(Visitor<PT,RT> v, PT param){
+        return v.visit(this,param);
     }
 
     @Override

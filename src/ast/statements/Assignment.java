@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 public class Assignment extends AbstractStatement{
     private Expression left;
@@ -12,11 +13,17 @@ public class Assignment extends AbstractStatement{
         this.right = right;
     }
 
+
     public Expression getLeft() {
         return left;
     }
     public Expression getRight() {
         return right;
+    }
+
+    @Override
+    public <PT,RT> RT accept(Visitor<PT,RT> v, PT param){
+        return v.visit(this,param);
     }
 
     @Override

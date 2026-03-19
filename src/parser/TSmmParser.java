@@ -1,4 +1,4 @@
-// Generated from C:/Users/uo300627/Desktop/DLP/DLP/src/parser/TSmm.g4 by ANTLR 4.13.2
+// Generated from C:/Users/Adria/Desktop/DLP/practica/proyecto_DLP/src/parser/TSmm.g4 by ANTLR 4.13.2
 package parser;
 
 import ast.expressions.*;
@@ -1296,14 +1296,14 @@ public class TSmmParser extends Parser {
 				setState(337);
 				match(T__4);
 
-				        for(VarDefinition field: _localctx.tempFields){
-				            if(_localctx.fieldsNames.contains(field.getName())){
-				                new ErrorType("Declarados dos campos con el mismo nombre", field);
-				            }else{
-				                _localctx.finalFields.add(new RecordField(field.getName(),field.getType()));
+				        for(VarDefinition varDef : _localctx.tempFields){
+				            if(_localctx.fieldsNames.contains(varDef.getName())){
+				                new ErrorType("Declarados dos campos con el mismo nombre", varDef);
+				            } else {
+				                _localctx.finalFields.add(new RecordField(varDef.getLine(), varDef.getColumn(), varDef.getName(), varDef.getType()));
 				            }
-				            _localctx.fieldsNames.add(field.getName());
-				        }
+				                _localctx.fieldsNames.add(varDef.getName());
+				            }
 				        ((TypeContext)_localctx).ast =  new RecordType(_localctx.finalFields);
 				    
 				}

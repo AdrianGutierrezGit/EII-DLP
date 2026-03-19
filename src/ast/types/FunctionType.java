@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.definitions.VarDefinition;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -27,5 +28,10 @@ public class FunctionType implements Type {
                 "returnType=" + returnType +
                 ", parameters=" + parameters +
                 '}';
+    }
+
+    @Override
+    public <PT,RT> RT accept(Visitor<PT,RT> v, PT param){
+        return v.visit(this,param);
     }
 }

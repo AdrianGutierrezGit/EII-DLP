@@ -1,15 +1,15 @@
-import ast.ASTNode;
-import ast.ErrorHandler;
-import parser.*;
-
+import errorHandler.ErrorHandler;
 import org.antlr.v4.runtime.*;
-
-import ast.Program;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
+import ast.ASTNode;
+import parser.TSmmLexer;
+import parser.TSmmParser;
+import visitor.LValueVisitor;
+import visitor.Visitor;
 
 public class Main {
-	
+
 	public static void main(String... args) throws Exception {
 		   if (args.length<1) {
 		        System.err.println("Please, pass me the input file.");
@@ -21,13 +21,16 @@ public class Main {
 		TSmmLexer lexer = new TSmmLexer(input);
 
 		// create a parser that feeds off the tokens buffer
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		CommonTokenStream tokens = new CommonTokenStream(lexer); 
 		TSmmParser parser = new TSmmParser(tokens);
 		ASTNode ast = parser.program().ast;
-		
+
+		Visitor<Void,Void> lValueVisitor = new LValueVisitor(); //TODO: instanciate a new LValueVisitor
+		ast.accept(lValueVisitor,null);	  //Incorrect use of the Visitor pattern, Fix it!
+
 		// * Check errors
 		if(ErrorHandler.getInstance().anyError()){
-			 //* Show errors
+			// * Show errors
 			ErrorHandler.getInstance().showErrors(System.err);
 		}
 		else{

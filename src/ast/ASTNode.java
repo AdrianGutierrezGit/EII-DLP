@@ -1,5 +1,7 @@
 package ast;
 
-public interface ASTNode {
+import visitor.Visitor;
 
+public interface ASTNode {
+    <PT,RT> RT accept(Visitor<PT,RT> v, PT param);
 }

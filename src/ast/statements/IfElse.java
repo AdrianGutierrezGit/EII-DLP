@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -25,6 +26,11 @@ public class IfElse extends AbstractStatement{
     public List<Statement> getElseStatements() {
         return elseStatements;
     }
+    @Override
+    public <PT,RT> RT accept(Visitor<PT,RT> v, PT param){
+        return v.visit(this,param);
+    }
+
 
     @Override
     public String toString() {

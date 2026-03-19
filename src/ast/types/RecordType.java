@@ -1,5 +1,7 @@
 package ast.types;
 
+import visitor.Visitor;
+
 import java.util.List;
 
 public class RecordType implements Type {
@@ -17,5 +19,10 @@ public class RecordType implements Type {
         return "RecordType{" +
                 "fields=" + fields +
                 '}';
+    }
+
+    @Override
+    public <PT,RT> RT accept(Visitor<PT,RT> v, PT param){
+        return v.visit(this,param);
     }
 }

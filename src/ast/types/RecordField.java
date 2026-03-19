@@ -1,14 +1,20 @@
 package ast.types;
 
 import ast.AbstractLocatable;
+import ast.Locatable;
+import visitor.Visitor;
 
-public class RecordField implements Type  {
+public class RecordField implements Locatable {
 
     private String name;
     private Type type;
-    public RecordField(String name, Type type) {
+    private int line;
+    private int column;
+    public RecordField(int line,int column, String name, Type type) {
         this.name = name;
         this.type = type;
+        this.line = line;
+        this.column = column;
     }
 
     public String getName() {
@@ -25,5 +31,20 @@ public class RecordField implements Type  {
                 "name='" + name + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+    @Override
+    public int getLine() {
+        return line;
+    }
+
+    @Override
+    public int getColumn() {
+        return column;
+    }
+
+    @Override
+    public <PT, RT> RT accept(Visitor<PT, RT> v, PT param) {
+        return v.visit(this,param);
     }
 }
