@@ -1,8 +1,9 @@
 package ast.types;
 
+import ast.Locatable;
 import visitor.Visitor;
 
-public class ArrayType implements Type {
+public class ArrayType extends AbstractType {
 
     private int size;
     private Type elementsType;
@@ -26,9 +27,19 @@ public class ArrayType implements Type {
 
     @Override
     public String toString() {
-        return "ArrayType{" +
-                "size=" + size +
-                ", elementsType=" + elementsType +
-                '}';
+        return "Array";
     }
+    @Override
+    public Type squareBrackets(Type other, Locatable locatable) {
+       if(other.equals(IntType.getInstance())){
+           return this.getElementsType();
+       }
+        return new ErrorType("El índice para acceder al array debe ser de tipo entero, pero se ha encontrado el tipo " + other.toString(), locatable);
+    }
+
+    @Override
+    public int numberOfBytes(){
+        return this.size * this.getElementsType().numberOfBytes();
+    }
+
 }

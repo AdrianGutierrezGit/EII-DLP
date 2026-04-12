@@ -8,6 +8,7 @@ public class RecordField implements Locatable {
 
     private String name;
     private Type type;
+    private int offset;
     private int line;
     private int column;
     public RecordField(int line,int column, String name, Type type) {
@@ -15,6 +16,14 @@ public class RecordField implements Locatable {
         this.type = type;
         this.line = line;
         this.column = column;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     public String getName() {
