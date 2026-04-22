@@ -9,9 +9,18 @@ import java.util.List;
 public class FunctionDefinition extends AbstractDefinition{
 
     private List<Statement> statements;
+    private int totalBytes;
     public FunctionDefinition(int line, int column, String name, Type type, List<Statement> statements) {
         super(line, column, name, type);
         this.statements = statements;
+    }
+
+    public int getTotalBytes() {
+        return totalBytes;
+    }
+
+    public void setTotalBytes(int totalBytes) {
+        this.totalBytes = totalBytes;
     }
 
     public List<Statement> getStatements(){

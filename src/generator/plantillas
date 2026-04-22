@@ -1,0 +1,128 @@
+Plantilla de una asignación
+execute[[Assignment: stmt -> exp1 exp2]]()=
+    address[[exp1]]()
+    value[[exp2]]()
+    cg.convertTo(exp2.type, exp1.type)
+    <store> exp1.type.suffix()
+
+Plantillas de variable
+address[[Variable: exp -> ID]()=
+    if(exp.definition.scope == 0){
+        <pusha> expr.definition.offset //variables gobales
+    }else{
+        //variables locales y parametros
+        <pusha bp>
+        <push> expr.definition.offset
+        <addi>
+    }
+
+value[[Variable: exp -> ID]()=
+    address[[expr]]()
+    <load> exp.type.suffix()
+
+Plantilla de program
+execution[[Program: program -> definition*]]() =
+    for(Definition vd: definition*){
+        if(vd instanceof VarDefinition){
+            execute[[vd]]()
+        }
+    }
+    for(Definition fd: definition*){
+        if(fd instanceOf FunctionDefinition){
+            execute[[fd]];
+        }
+    }
+
+
+
+Plantilla de functiondefinition
+execute[[FunctionDefinition: def: ID type stmt*]]()=
+    ID <:>
+    for(VarDefinition p: type.parameter)
+        execute[[p]]
+    for(Statement s : stmt*) {
+        if (s instanceof VarDefinition) {
+             execute[[s]]()
+        }
+    }
+    <enter> definition.totalBytes
+    for(Statement s: stmt*){
+        execute[[s]]
+    }
+    ret 0
+
+Plantilla de log
+execute[[Log: stmt -> exp]]() =
+    value[[exp]]()
+    <out> exp.type.suffix()
+
+Plantilla de input
+execute[[Input: stmt -> exp]]() =
+    address[[exp]]()
+    <in> exp.type.suffix()
+    <store> exp.type.suffix()
+
+Plantilla de IntLiteral
+value[[IntLiteral: exp -> INT]]() =
+    <pushi> exp.value
+
+Plantilla de NumberLiteral
+value[[DoubleLiteral: exp -> DOUBLE]]() =
+    <pushf> exp.value
+
+Plantilla de CharLiteral
+value[[CharLiteral: exp -> CHAR]]() =
+    <pushb> exp.value
+
+Plantilla de casts
+value[[Cast: exp -> type exp1]]() =
+    value[[exp1]]()
+    cg.convertTo(exp1.type, type)
+
+Plantilla de arithmetic
+value[[Arithmetic: exp -> exp1 operator exp2]]() =
+    value[[exp1]]()
+    cg.convertTo(exp1.type, exp.type)
+    value[[exp2]]()
+    cg.convertTo(exp2.type, exp.type)
+    switch(operator) {
+        case '+': <add> exp.type.suffix()
+        case '-': <sub> exp.type.suffix()
+        case '*': <mul> exp.type.suffix()
+        case '/': <div> exp.type.suffix()
+        case '%': <mod> exp.type.suffix()
+    }
+
+Plantilla de Comparison
+value[[Comparison: exp -> exp1 operator exp2]]() =
+    Type finalType = cg.promotedType(exp1.type, exp2.type)
+    value[[exp1]]()
+    cg.convertTo(exp1.type, finalType)
+    value[[exp2]]()
+    cg.convertTo(exp2.type, finalType)
+    switch(operator) {
+        case '>': <gt> finalType.suffix()
+        case '<': <lt> finalType.suffix()
+        case '>=': <ge> finalType.suffix()
+        case '<=': <le> finalType.suffix()
+        case '==': <eq> finalType.suffix()
+        case '!=': <ne> finalType.suffix()
+    }
+
+Plantilla de Logic
+value[[Logic: exp -> exp1 operator exp2]]() =
+    value[[exp1]]()
+    value[[exp2]]()
+    switch(operator) {
+        case '&&': <and>
+        case '||': <or>
+    }
+
+Plantilla de varDefinition
+execute[[VarDefinition: def -> type ID]]() =
+    < ' * > type.name < > ID < (offset > def.offset <)>
+
+Plantilla UnaryNot
+value[[UnaryNot: exp -> exp1]]() =
+    value[[exp1]]()
+    <not>

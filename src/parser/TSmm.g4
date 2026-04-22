@@ -37,8 +37,8 @@ statement returns [List<Statement> ast = new ArrayList<>()] locals [List<Stateme
           e1=expression '=' e2=expression ';' {$ast.add(new Assignment($e1.ast.getLine(),$e2.ast.getColumn(),$e1.ast,$e2.ast));}
          | 'while' '(' expression ')' body {$ast.add(new While($expression.ast.getLine(),$expression.ast.getColumn(),$expression.ast,$body.ast));}
          | 'if' '(' expression ')' b1=body ('else' b2=body {$else = $b2.ast;})? {$ast.add(new IfElse($expression.ast.getLine(),$expression.ast.getColumn(),$expression.ast,$b1.ast,$else));}
-         | 'input' ((e1=expression ',' {$ast.add(new Input($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast));})* e2=expression {$ast.add(new Input($e2.ast.getLine(),$e2.ast.getColumn(),$e2.ast));})? ';'
-         | 'log' ((e1=expression ',' {$ast.add(new Log($e1.ast.getLine(),$e1.ast.getColumn(),$e1.ast));})* e2=expression {$ast.add(new Log($e2.ast.getLine(),$e2.ast.getColumn(),$e2.ast));})? ';'
+         | I='input' ((e1=expression ',' {$ast.add(new Input($I.getLine(),$I.getCharPositionInLine()+1,$e1.ast));})* e2=expression {$ast.add(new Input($I.getLine(),$I.getCharPositionInLine()+1,$e2.ast));})? ';'
+         | L='log' ((e1=expression ',' {$ast.add(new Log($L.getLine(),$L.getCharPositionInLine()+1,$e1.ast));})* e2=expression {$ast.add(new Log($L.getLine(),$L.getCharPositionInLine()+1,$e2.ast));})? ';'
          | 'return' expression ';' {$ast.add(new Return($expression.ast.getLine(),$expression.ast.getColumn(),$expression.ast));}
          | ID '(' ((e1=expression ',' {$functionInvocationExps.add($e1.ast);})* e2=expression {$functionInvocationExps.add($e2.ast);})?')' ';' {$ast.add(new Invocation($ID.getLine(),$ID.getCharPositionInLine()+1,new Variable($ID.getLine(), $ID.getCharPositionInLine()+1,$ID.text),$functionInvocationExps));}
          ;

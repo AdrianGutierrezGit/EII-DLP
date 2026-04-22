@@ -57,6 +57,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type,Void>{
     public Void visit(Cast c, Type param) {
         super.visit(c,param);
         c.getExpression().getType().canBeCast(c.getCastType(),c);
+        c.setType(c.getCastType());
         return null;
     }
 

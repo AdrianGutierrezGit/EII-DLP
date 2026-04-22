@@ -86,4 +86,9 @@ public class ErrorType implements Type{
     public int numberOfBytes() {
         throw  new UnsupportedOperationException("Se ha producido un error con la variable");
     }
+
+    @Override
+    public Character suffix() {
+        throw new UnsupportedOperationException("No se puede obtener el sufijo del tipo " + this.toString());
+    }
 }

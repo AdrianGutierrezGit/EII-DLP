@@ -72,4 +72,9 @@ public class CharType extends AbstractType {
     public int numberOfBytes(){
         return 1;
     }
+
+    @Override
+    public Character suffix(){
+        return 'b';
+    }
 }

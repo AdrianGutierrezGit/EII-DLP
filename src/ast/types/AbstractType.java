@@ -83,4 +83,9 @@ public abstract class AbstractType implements Type{
         throw new UnsupportedOperationException("Una variable no puede ser de tipo " + this.toString());
     }
 
+    @Override
+    public Character suffix(){
+        throw new UnsupportedOperationException("No se puede obtener el sufijo del tipo " + this.toString());
+    }
+
 }

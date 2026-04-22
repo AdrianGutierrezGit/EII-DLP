@@ -520,6 +520,8 @@ public class TSmmParser extends Parser {
 		public BodyContext body;
 		public BodyContext b1;
 		public BodyContext b2;
+		public Token I;
+		public Token L;
 		public Token ID;
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -612,7 +614,7 @@ public class TSmmParser extends Parser {
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(149);
-				match(T__26);
+				((StatementContext)_localctx).I = match(T__26);
 				setState(162);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -629,7 +631,7 @@ public class TSmmParser extends Parser {
 							((StatementContext)_localctx).e1 = expression(0);
 							setState(151);
 							match(T__2);
-							_localctx.ast.add(new Input(((StatementContext)_localctx).e1.ast.getLine(),((StatementContext)_localctx).e1.ast.getColumn(),((StatementContext)_localctx).e1.ast));
+							_localctx.ast.add(new Input(((StatementContext)_localctx).I.getLine(),((StatementContext)_localctx).I.getCharPositionInLine()+1,((StatementContext)_localctx).e1.ast));
 							}
 							} 
 						}
@@ -639,7 +641,7 @@ public class TSmmParser extends Parser {
 					}
 					setState(159);
 					((StatementContext)_localctx).e2 = expression(0);
-					_localctx.ast.add(new Input(((StatementContext)_localctx).e2.ast.getLine(),((StatementContext)_localctx).e2.ast.getColumn(),((StatementContext)_localctx).e2.ast));
+					_localctx.ast.add(new Input(((StatementContext)_localctx).I.getLine(),((StatementContext)_localctx).I.getCharPositionInLine()+1,((StatementContext)_localctx).e2.ast));
 					}
 				}
 
@@ -651,7 +653,7 @@ public class TSmmParser extends Parser {
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(165);
-				match(T__27);
+				((StatementContext)_localctx).L = match(T__27);
 				setState(178);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -668,7 +670,7 @@ public class TSmmParser extends Parser {
 							((StatementContext)_localctx).e1 = expression(0);
 							setState(167);
 							match(T__2);
-							_localctx.ast.add(new Log(((StatementContext)_localctx).e1.ast.getLine(),((StatementContext)_localctx).e1.ast.getColumn(),((StatementContext)_localctx).e1.ast));
+							_localctx.ast.add(new Log(((StatementContext)_localctx).L.getLine(),((StatementContext)_localctx).L.getCharPositionInLine()+1,((StatementContext)_localctx).e1.ast));
 							}
 							} 
 						}
@@ -678,7 +680,7 @@ public class TSmmParser extends Parser {
 					}
 					setState(175);
 					((StatementContext)_localctx).e2 = expression(0);
-					_localctx.ast.add(new Log(((StatementContext)_localctx).e2.ast.getLine(),((StatementContext)_localctx).e2.ast.getColumn(),((StatementContext)_localctx).e2.ast));
+					_localctx.ast.add(new Log(((StatementContext)_localctx).L.getLine(),((StatementContext)_localctx).L.getCharPositionInLine()+1,((StatementContext)_localctx).e2.ast));
 					}
 				}
 

@@ -14,6 +14,7 @@ public class OffsetVisitor extends AbstractVisitor<Boolean,Void> {
 
     @Override
     public Void visit(VarDefinition v, Boolean param) {
+        v.getType().accept(this,param);
         if(v.getScope() == 0){
             v.setOffset(totalGlobalBytes);
             totalGlobalBytes += v.getType().numberOfBytes();
@@ -48,10 +49,13 @@ public class OffsetVisitor extends AbstractVisitor<Boolean,Void> {
 
     @Override
     public Void visit(FunctionDefinition f, Boolean param){
+        totalLocalBytes = 0;
+        totalParametersBytes = 4;
         f.getType().accept(this,param);
-        for(int i = f.getStatements().size() - 1;i>=0; i--){
-            f.getStatements().get(i).accept(this,true);
+        for(int i = 0; i < f.getStatements().size(); i++){
+            f.getStatements().get(i).accept(this, true);
         }
+        f.setTotalBytes(-totalLocalBytes);
         return null;
     }
 }
